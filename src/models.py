@@ -18,7 +18,8 @@ class User(db.Model):
     id: Mapped[int] = mapped_column(primary_key=True)
     email: Mapped[str] = mapped_column(String(120), unique=True, nullable=False)
     password: Mapped[str] = mapped_column(nullable=False)
-    Birthdate: Mapped [date]= mapped_column(nullable=False)
+    birthdate: Mapped [date]= mapped_column(nullable=True)
+    
    
     favorites: Mapped[List["Favorite"]] = relationship(back_populates="user")
     
@@ -26,6 +27,7 @@ class User(db.Model):
         return {
             "id": self.id,
             "email": self.email,
+            "birthdate": self.birthdate
             # do not serialize the password, its a security breach
         }
 
@@ -55,9 +57,7 @@ class Planets(db.Model):
             "rotation_period": self.rotation_period,
             "orbital_period": self.orbital_period,
             "gravity": self.gravity,
-            "surface_water": self.surface_water,
-            "description": self.description,
-            "image_url": self.image_url
+           
         }
 
 class Character(db.Model):
@@ -86,8 +86,7 @@ class Character(db.Model):
             "hair_color": self.hair_color,
             "skin_color": self.skin_color,
             "eye_color": self.eye_color,
-            "description": self.description,
-            "image_url": self.image_url
+    
         }
     
 class Favorite(db.Model):
@@ -98,4 +97,4 @@ class Favorite(db.Model):
 
     user: Mapped["User"] = relationship(back_populates="favorites")
     character: Mapped[Optional["Character"]] = relationship(back_populates="favorites")
-    planet: Mapped[Optional["Planets"]] = relationship(back_populates="favorites")
+    planets: Mapped[Optional["Planets"]] = relationship(back_populates="favorites")
